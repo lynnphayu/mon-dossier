@@ -1,0 +1,56 @@
+---
+import ThemeConfigurator from "./ThemeConfigurator.astro";
+import siteConfig from "../config/site.json";
+---
+
+<div class="flex flex-col items-center justify-center min-h-screen p-4">
+  <ThemeConfigurator />
+  <div class="w-full max-w-2xl mx-auto">
+    <div
+      class="text-sm md:text-base leading-[1.8] tracking-wide text-gray-700 dark:text-gray-300 backdrop-blur-sm rounded-xl p-3 md:p-6"
+    >
+      <div class="space-y-3 mb-4">
+        <span
+          class="text-lg md:text-xl font-bold text-accent-light dark:text-accent-dark block mb-3"
+          >Hey! 👋</span
+        >
+        <span class="block">
+          I'm Lin Phay Oo, a software engineer from Myanmar, currently crafting
+          backends in Singapore at SPH. Before this, I helped build Zig (a
+          ComfortDelGro company) and also worked at Expa.ai — an experience that
+          helped me grow a lot as a software engineer.
+        </span>
+        <span class="block">
+          I love creating cool things, sometimes fueled by a coffee or a beer
+          (or two!). Besides coding, I'm always down for a chat about computer
+          science, stocks, gaming, and basically anything that sparks curiosity.
+        </span>
+      </div>
+
+      <div
+        class="flex flex-col sm:flex-row items-start sm:items-center gap-2 pt-3 border-t border-gray-200/70 dark:border-neutral-700/70"
+      >
+        <span class="text-sm text-gray-600 dark:text-gray-400"
+          >Hit me up on :</span
+        >
+        <div class="flex gap-4">
+          {
+            siteConfig.socials.map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent-light dark:text-accent-dark hover:opacity-80 transition-colors"
+                aria-label={link.platform}
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d={link.icon} />
+                </svg>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
