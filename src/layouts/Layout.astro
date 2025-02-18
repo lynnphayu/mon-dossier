@@ -1,4 +1,5 @@
 ---
+import ThemeConfigurator from "../components/ThemeConfigurator.astro";
 import "../styles/global.css";
 ---
 
@@ -13,37 +14,22 @@ import "../styles/global.css";
     <title>Hi there!</title>
     <script>
       // Check for saved theme preference, otherwise use system preference
-      const theme = (() => {
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme === "light" || savedTheme === "dark") {
-          return savedTheme;
-        }
-        return "system";
-      })();
-
-      if (theme === "system") {
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          document.documentElement.classList.add("dark");
-        }
-      } else if (theme === "dark") {
-        document.documentElement.classList.add("dark");
-      }
-
-      // Listen for system theme changes
+      const theme = localStorage.getItem("theme") || "system";
       if (theme === "system") {
         window
           .matchMedia("(prefers-color-scheme: dark)")
-          .addEventListener("change", (e) => {
-            if (e.matches) {
-              document.documentElement.classList.add("dark");
-            } else {
-              document.documentElement.classList.remove("dark");
-            }
-          });
+          .addEventListener("change", (e) =>
+            e.matches
+              ? document.documentElement.classList.add("dark")
+              : document.documentElement.classList.remove("dark")
+          );
+      } else {
+        document.documentElement.classList.add(theme);
       }
     </script>
   </head>
   <body class="transition-colors duration-200 dark:bg-neutral-900">
+    <ThemeConfigurator />
     <slot />
   </body>
 </html>

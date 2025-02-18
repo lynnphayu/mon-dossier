@@ -1,0 +1,75 @@
+---
+const { class: className, type = "button", ariaLabel } = Astro.props;
+const id = `spinner-btn-${Math.random().toString(36).substring(2)}`;
+---
+
+<button
+  type={type}
+  id={id}
+  class={`submit-button w-12 h-12 flex items-center justify-center bg-accent-light dark:bg-accent-dark text-white rounded-full hover:opacity-90 transition-all hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed ${className}`}
+  aria-label={ariaLabel}
+>
+  <slot />
+</button>
+
+<style>
+  .submit-button {
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .submit-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--accent-light);
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 9999px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  :global(.dark) .submit-button::after {
+    border-color: var(--accent-dark);
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .loading.submit-button {
+    background-color: transparent !important;
+  }
+
+  .loading.submit-button::after {
+    opacity: 1;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<script define:vars={{ id }}>
+  const button = document.getElementById(id);
+  if (!(button instanceof HTMLButtonElement)) return;
+
+  window.spinnerButtons = window.spinnerButtons || {};
+  window.spinnerButtons[id] = {
+    showLoading: () => {
+      button.disabled = true;
+      button.classList.add("loading");
+    },
+    hideLoading: () => {
+      button.disabled = false;
+      button.classList.remove("loading");
+    },
+  };
+</script>

@@ -1,10 +1,10 @@
 ---
-import ThemeConfigurator from "./ThemeConfigurator.astro";
+import MessageModal from "./MessageModal.astro";
 import siteConfig from "../config/site.json";
+import Message from "../assets/Message.astro";
 ---
 
 <div class="flex flex-col items-center justify-center min-h-screen p-4">
-  <ThemeConfigurator />
   <div class="w-full max-w-2xl mx-auto">
     <div
       class="text-sm md:text-base leading-[1.8] tracking-wide text-gray-700 dark:text-gray-300 backdrop-blur-sm rounded-xl p-3 md:p-6"
@@ -38,8 +38,8 @@ import siteConfig from "../config/site.json";
         </span>
         <span class="block">
           I love creating cool things, sometimes fueled by a coffee or a beer
-          (or two!). Besides coding, I'm always down for a chat about computer
-          science, stocks, gaming, and basically anything that sparks curiosity.
+          (or two!). Besides coding, I'm always down for a chat about tech,
+          stock, gaming, and basically anything that sparks curiosity.
         </span>
       </div>
 
@@ -67,6 +67,20 @@ import siteConfig from "../config/site.json";
           }
         </div>
       </div>
+      <div class="flex items-center gap-4 pt-2">
+        <span class="text-sm text-gray-600 dark:text-gray-400"
+          >Or anonymously message me :</span
+        >
+        <a
+          id="anonymous-msg"
+          class="text-accent-light dark:text-accent-dark hover:opacity-80 transition-colors block"
+          aria-label="Send anonymous message"
+        >
+          <Message class="w-5 h-5" />
+        </a>
+      </div>
     </div>
   </div>
 </div>
+
+<MessageModal />
