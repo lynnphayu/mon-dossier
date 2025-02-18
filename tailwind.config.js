@@ -32,10 +32,6 @@ export default {
     },
   },
   corePlugins: {
-    alignContent: false,
-    alignItems: false,
-    alignSelf: false,
-
     backdropBlur: false,
     backdropBrightness: false,
     backdropContrast: false,
