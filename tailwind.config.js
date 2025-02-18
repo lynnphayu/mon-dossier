@@ -55,7 +55,7 @@ export default {
     borderSpacing: false,
     borderStyle: false,
     boxDecorationBreak: false,
-    boxShadow: false,
+    // boxShadow: false,
     boxSizing: false,
     breakAfter: false,
     breakBefore: false,
