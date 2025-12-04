@@ -32,7 +32,7 @@ export default defineConfig({
   ],
   compressHTML: true,
   build: {
-    inlineStylesheets: "auto",
+    inlineStylesheets: "always",
     assets: "assets",
   },
   output: "static",
