@@ -32,6 +32,7 @@ export default {
 		},
 	},
 	corePlugins: {
+		preflight: false,
 		backdropBlur: false,
 		backdropBrightness: false,
 		backdropContrast: false,
