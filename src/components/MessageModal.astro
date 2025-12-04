@@ -59,14 +59,17 @@ import SpinnerButton from "./SpinnerButton.astro";
 
 <script>
   const modal = document.getElementById("message-modal") as HTMLDivElement;
-  const open = document.getElementById("anonymous-msg") as HTMLButtonElement;
+  const triggers = document.querySelectorAll<HTMLButtonElement>(
+    "[data-anonymous-trigger]"
+  );
   const close = document.getElementById("close-modal") as HTMLButtonElement;
   const form = document.getElementById("anonymous-form") as HTMLFormElement;
 
-  open.addEventListener("click", () => {
+  const openModal = () => {
     modal.classList.remove("hidden");
     document.body.style.overflow = "hidden";
-  });
+  };
+  triggers.forEach((trigger) => trigger.addEventListener("click", openModal));
 
   const closeModal = () => {
     modal.classList.add("hidden");

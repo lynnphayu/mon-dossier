@@ -4,6 +4,11 @@ import SettingWheel from "../assets/SettingWheel.astro";
 import Sun from "../assets/Sun.astro";
 import Moon from "../assets/Moon.astro";
 import Close from "../assets/Close.astro";
+import {
+  languageContent,
+  languageOrder,
+  defaultLanguage as defaultLanguageCode,
+} from "../config/languages";
 ---
 
 <button
@@ -27,19 +32,19 @@ import Close from "../assets/Close.astro";
   </button>
 
   <div class="mb-3 sm:mb-4">
-    <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+    <!-- <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
       Theme
-    </h3>
-    <div class="flex gap-2">
+    </h3> -->
+    <div class="flex flex-wrap gap-2">
       <button
-        class="theme-btn p-2 rounded-lg bg-gray-100 dark:bg-neutral-700 hover:opacity-80 transition-colors"
+        class="w-9 theme-btn p-2 rounded-lg bg-gray-100 dark:bg-neutral-700 hover:opacity-80 transition-colors"
         data-theme="light"
         aria-label="Light theme"
       >
         <Sun class="w-5 h-5 text-amber-500" />
       </button>
       <button
-        class="theme-btn p-2 rounded-lg bg-gray-100 dark:bg-neutral-700 hover:opacity-80 transition-colors"
+        class="w-9 theme-btn p-2 rounded-lg bg-gray-100 dark:bg-neutral-700 hover:opacity-80 transition-colors"
         data-theme="dark"
         aria-label="Dark theme"
       >
@@ -49,9 +54,9 @@ import Close from "../assets/Close.astro";
   </div>
 
   <div>
-    <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+    <!-- <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
       Accent
-    </h3>
+    </h3> -->
     <div class="flex flex-wrap gap-2">
       {
         siteConfig.accentColors.map((color) => (
@@ -61,6 +66,28 @@ import Close from "../assets/Close.astro";
             data-color={color.value}
             aria-label={`${color.name} accent`}
           />
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="mt-3 sm:mt-4">
+    <!-- <h3 class="text-sm font-medium text-gray-700.dark:text-gray-300 mb-2">
+      Language
+    </h3> -->
+    <div class="flex gap-2">
+      {
+        languageOrder.map((code) => (
+          <button
+            class="w-9 language-btn p-2 rounded-lg bg-gray-100 text-gray-700 dark:bg-neutral-700 dark:text-gray-200 hover:opacity-80 transition-colors data-[active=true]:ring-2 data-[active=true]:ring-accent-light dark:data-[active=true]:ring-accent-dark data-[active=true]:bg-white data-[active=true]:text-gray-900 dark:data-[active=true]:bg-neutral-600 dark:data-[active=true]:text-white"
+            data-language-chip={code}
+            data-active={code === defaultLanguageCode ? "true" : "false"}
+            aria-label={`${languageContent[code].shortLabel} language`}
+          >
+            <span class="text-[10px] font-semibold uppercase tracking-wide w-5 h-5 line-height-1">
+              {languageContent[code].shortLabel}
+            </span>
+          </button>
         ))
       }
     </div>

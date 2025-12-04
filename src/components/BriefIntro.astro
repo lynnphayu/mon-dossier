@@ -2,85 +2,137 @@
 import MessageModal from "./MessageModal.astro";
 import siteConfig from "../config/site.json";
 import Message from "../assets/Message.astro";
+import {
+    languageContent,
+    languageOrder,
+    defaultLanguage,
+} from "../config/languages";
 ---
 
 <div class="flex flex-col items-center justify-center min-h-screen p-4">
-  <div class="w-full max-w-2xl mx-auto">
-    <div
-      class="text-sm md:text-base leading-[1.8] tracking-wide text-gray-700 dark:text-gray-300 backdrop-blur-sm rounded-xl p-3 md:p-6"
-    >
-      <div class="space-y-3 mb-4">
-        <span
-          class="text-lg md:text-xl font-bold text-accent-light dark:text-accent-dark block mb-3"
-          >Hey! 👋</span
+    <div class="w-full max-w-2xl mx-auto">
+        <div
+            class="text-sm md:text-base leading-[1.8] tracking-wide text-gray-700 dark:text-gray-300 backdrop-blur-sm rounded-xl p-3 md:p-6"
         >
-        <span class="block">
-          I'm Lin Phay Oo, a software engineer from Myanmar, currently crafting
-          backends in Singapore at <a
-            href="https://www.sph.com.sg/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-accent-light dark:text-accent-dark hover:opacity-80 transition-colors"
-            >SPH</a
-          >. Before this, I helped build <a
-            href="https://www.zig.live/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-accent-light dark:text-accent-dark hover:opacity-80 transition-colors"
-            >Zig</a
-          > (a ComfortDelGro company) and also worked at <a
-            href="https://expa.ai/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-accent-light dark:text-accent-dark hover:opacity-80 transition-colors"
-            >Expa.ai</a
-          > — an experience that helped me grow a lot as a software engineer.
-        </span>
-        <span class="block">
-          I love creating cool things, sometimes fueled by a coffee or a beer
-          (or two!). Besides coding, I'm always down for a chat about tech,
-          stock, gaming, and basically anything that sparks curiosity.
-        </span>
-      </div>
+            {
+                Object.entries(languageContent).map(([code, copy]) => (
+                    <div
+                        class={`space-y-3 mb-4 ${code === defaultLanguage ? "" : "hidden"}`}
+                        data-language-content={code}
+                    >
+                        <span class="text-lg md:text-xl font-bold text-accent-light dark:text-accent-dark block mb-3">
+                            {copy.greeting}
+                        </span>
+                        <span class="block" set:html={copy.content1} />
+                        <span class="block">
+                            <span set:html={copy.content2} />
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 pt-3 border-t border-gray-200/70 dark:border-neutral-700/70">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">
+                                    {copy.contactLabel}
+                                </span>
 
-      <div
-        class="flex flex-col sm:flex-row items-start sm:items-center gap-2 pt-3 border-t border-gray-200/70 dark:border-neutral-700/70"
-      >
-        <span class="text-sm text-gray-600 dark:text-gray-400"
-          >Hit me up on :</span
-        >
-        <div class="flex gap-3">
-          {
-            siteConfig.socials.map((link) => (
-              <a
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-accent-light dark:text-accent-dark hover:opacity-80 transition-colors"
-                aria-label={link.platform}
-              >
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d={link.icon} />
-                </svg>
-              </a>
-            ))
-          }
+                                <div class="flex gap-3">
+                                    {siteConfig.socials
+                                        .filter((link) =>
+                                            copy.platforms.includes(
+                                                link.platform,
+                                            ),
+                                        )
+                                        .map((link) => (
+                                            <a
+                                                href={link.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-accent-light dark:text-accent-dark hover:opacity-80 transition-colors"
+                                                aria-label={link.platform}
+                                            >
+                                                <svg
+                                                    class="w-5 h-5"
+                                                    fill="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path d={link.icon} />
+                                                </svg>
+                                            </a>
+                                        ))}
+                                </div>
+                            </div>
+
+                            {copy.anonymousLabel === "" ? null : (
+                                <div class="flex items-center gap-3 pt-2">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">
+                                        {copy.anonymousLabel}
+                                    </span>
+                                    <button
+                                        data-anonymous-trigger="true"
+                                        class="text-accent-light dark:text-accent-dark hover:opacity-80 transition-colors block"
+                                        aria-label="Send anonymous message"
+                                    >
+                                        <Message class="w-5 h-5" />
+                                    </button>
+                                </div>
+                            )}
+                        </span>
+                    </div>
+                ))
+            }
         </div>
-      </div>
-      <div class="flex items-center gap-3 pt-2">
-        <span class="text-sm text-gray-600 dark:text-gray-400"
-          >Or anonymously message me :</span
-        >
-        <a
-          id="anonymous-msg"
-          class="text-accent-light dark:text-accent-dark hover:opacity-80 transition-colors block"
-          aria-label="Send anonymous message"
-        >
-          <Message class="w-5 h-5" />
-        </a>
-      </div>
+
+        <MessageModal />
     </div>
-  </div>
 </div>
 
-<MessageModal />
+<script define:vars={{ languageOrder, defaultLanguage }}>
+    const supportedLanguages = languageOrder;
+    const defaultLanguageCode = defaultLanguage;
+    const storageKey = "preferred-language";
+
+    const languageSections = document.querySelectorAll(
+        "[data-language-content]",
+    );
+    const languageChips = document.querySelectorAll("[data-language-chip]");
+
+    const resolveInitialLanguage = () => {
+        const stored = localStorage.getItem(storageKey);
+        if (stored && supportedLanguages.includes(stored)) {
+            return stored;
+        }
+        return defaultLanguageCode;
+    };
+
+    const applyLanguage = (lang) => {
+        languageSections.forEach((section) => {
+            if (!(section instanceof HTMLElement)) {
+                return;
+            }
+            const isActive = section.dataset.languageContent === lang;
+            section.classList.toggle("hidden", !isActive);
+        });
+
+        languageChips.forEach((chip) => {
+            if (!(chip instanceof HTMLElement)) {
+                return;
+            }
+            chip.dataset.active =
+                chip.dataset.languageChip === lang ? "true" : "false";
+        });
+
+        document.documentElement.setAttribute("lang", lang);
+        localStorage.setItem(storageKey, lang);
+    };
+
+    const initialLanguage = resolveInitialLanguage();
+    applyLanguage(initialLanguage);
+
+    languageChips.forEach((chip) => {
+        if (!(chip instanceof HTMLElement)) {
+            return;
+        }
+        chip.addEventListener("click", () => {
+            const lang = chip.dataset.languageChip;
+            if (lang) {
+                applyLanguage(lang);
+            }
+        });
+    });
+</script>
